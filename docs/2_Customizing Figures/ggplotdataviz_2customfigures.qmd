@@ -1,0 +1,485 @@
+---
+title: "Data Visualization with ggplot2"
+subtitle: "Session 2: Building a Custom Theme"
+author: "Nathan Barron<br /><span style='color:grey;'>{{< fa envelope >}} nathanbarron@ou.edu</span>"
+format:
+  revealjs: 
+    theme: ../mytheme.scss
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    navigation-mode: linear
+    touch: true
+    controls: true
+    footer: "{{< fa brands github >}} [nathantbarron](https://github.com/nathantbarron)"
+resources:
+  - demo.pdf
+---
+
+## The `theme` layer 
+The `theme()` function allows you to override default graphics settings. There are two main components involved: 
+
+::: columns
+
+::: {.column width="50%"}
+::: fragment
+**Elements:** non-data elements of the graphic that you can control
+
+<br>
+Examples:
+
+-   `plot.title`
+-   `axis.ticks.x`
+-   `legend.key.height`
+-   etc.
+
+:::
+
+:::
+
+::: {.column width="50%"}
+::: fragment
+**Element functions:** the description of element features
+
+<br>
+Examples:
+
+-   `element_text()`
+-   `element_rect()`
+-   `element_line()`
+-   etc.
+:::
+
+:::
+
+:::
+
+::: footer
+Learn more: [Themes](https://ggplot2-book.org/themes.html)
+:::
+
+
+## Complete themes
+
+`ggplot2` has eight pre-made themes built in: 
+
+::: columns
+
+::: {.column width="50%"}
+
+<br><br>
+
+-   `theme_grey()`
+    -   `theme_bw()`
+-   `theme_linedraw()`
+    -   `theme_light()`
+    -   `theme_dark()`
+-   `theme_minimal()`
+-   `theme_classic()`
+-   `theme_void()`
+
+:::
+
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+library(ggplot2)
+library(extrafont)
+ggplot() + geom_point(aes(1:5,1:5), size=4) + theme_linedraw()  + labs(x='\nx',y='y\n',title='theme_linedraw()') + 
+  theme(plot.title = element_text(size=30), axis.title = element_text(size=20), axis.text = element_text(size=20))
+```
+
+
+:::
+
+:::
+
+::: footer
+Learn more: [Pre-built themes with ggthemes](https://github.com/jrnold/ggthemes)
+:::
+
+## Plot elements {.smaller}
+
+::: columns
+
+::: {.column width="50%"}
+
+-   `plot.background`
+-   `plot.title`
+-   `plot.title.position`
+-   `plot.subtitle`
+-   `plot.caption`
+-   `plot.caption.position`
+-   `plot.tag`
+-   `plot.tag.position`
+
+
+
+:::
+
+::: {.column width="50%"}
+<br>
+```{r, fig.height=8.5}
+ggplot(iris) +
+  geom_point(aes(Sepal.Length,Petal.Length)) + 
+  labs(title = 'Title',
+       subtitle = 'Subtitle',
+       caption = 'Caption') + 
+  theme(axis.title = element_text(size=25, family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold', color='red'),
+        plot.subtitle = element_text(size=15, family = 'Hind', color='red'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic', color='red'))
+```
+
+:::
+
+:::
+
+::: footer
+Learn more: [Plot Elements](https://ggplot2-book.org/themes.html#plot-elements)
+:::
+
+
+
+## Panel elements {.smaller}
+
+
+::: columns
+
+::: {.column width="50%"}
+
+-   `panel.background`
+-   `panel.border`
+-   `panel.grid`
+    -   `panel.grid.major`
+        -   `panel.grid.major.x`
+        -   `panel.grid.major.y`
+    -   `panel.grid.minor`
+        -   `panel.grid.minor.x`
+        -   `panel.grid.minor.y`
+
+
+
+:::
+
+::: {.column width="50%"}
+
+<br>
+```{r, fig.height=8.5}
+ggplot(iris) +
+  geom_point(aes(Sepal.Length,Petal.Length)) + 
+  labs(title = 'Title',
+       subtitle = 'Subtitle',
+       caption = 'Caption') + 
+  theme(panel.background = element_rect(fill='pink'), 
+        panel.border = element_rect(color = 'red',fill=NA, size=3), 
+        panel.grid = element_line(color = "firebrick"),
+        axis.title = element_text(size=25, family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic')
+        )
+```
+
+
+:::
+
+:::
+
+::: footer
+Learn more: [Panel Elements](https://ggplot2-book.org/themes.html#panel-elements)
+:::
+
+
+
+
+## Axis elements {.smaller}
+
+::: columns
+
+::: {.column width="50%"}
+
+-   `axis.title`
+    -   `axis.title.x` (.top/.bottom)
+    -   `axis.title.y` (.left/.right)
+-   `axis.text`
+    -   `axis.text.x` (.top/.bottom)
+    -   `axis.text.y` (.left/.right)`  
+-   `axis.ticks`
+    -   `axis.ticks.x` (.top/.bottom)
+    -   `axis.ticks.y` (.left/.right)
+-   `axis.ticks.length`
+    -   `axis.ticks.length.x` (.top/.bottom)
+    -   `axis.ticks.length.y` (.left/.right)
+-   `axis.line`
+    -   `axis.line.x` (.top/.bottom)
+    -   `axis.line.y` (.left/.right)
+
+
+
+:::
+
+
+
+::: {.column width="50%"}
+
+<br>
+```{r, fig.height=8.5}
+ggplot(iris) +
+  geom_point(aes(Sepal.Length,Petal.Length)) + 
+  labs(title = 'Title',
+       subtitle = 'Subtitle',
+       caption = 'Caption') + 
+  theme(axis.ticks = element_line(color = 'red', size = 2), 
+        axis.line = element_line(color = 'red'),
+        axis.title = element_text(size=25, family = 'Hind', color = 'red'),
+        axis.text = element_text(size=25, family = 'Hind', color = 'red'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic')
+        )
+```
+
+:::
+
+:::
+
+::: footer
+Learn more: [Axis Elements](https://ggplot2-book.org/themes.html#sec-theme-axis)
+:::
+
+
+
+## Legend elements {.smaller}
+
+::: columns
+
+::: {.column width="50%"}
+
+-   `legend.background`
+-   `legend.margin`
+-   `legend.spacing`
+    -   `legend.spacing.x`
+    -   `legend.spacing.y`
+-   `legend.key`
+    -   `legend.key.size`
+    -   `legend.key.height`
+    -   `legend.key.width`
+-   `legend.text`
+    -   `legend.text.align`
+-   `legend.title`
+    -   `legend.title.align`
+-   `legend.position`
+-   `legend.direction`
+-   `legend.justification`
+-   `legend.box`
+    -   `legend.box.just`
+    -   `legend.box.margin`
+    -   `legend.box.background`
+    -   `legend.box.spacing`
+
+
+:::
+
+::: {.column width="50%"}
+
+<br>
+```{r, fig.height=8.5}
+ggplot(iris) +
+  geom_point(aes(Sepal.Length,Petal.Length, shape = Species)) + 
+  labs(title = 'Title',
+       subtitle = 'Subtitle',
+       caption = 'Caption', 
+       shape = 'Species') + 
+  theme(legend.background = element_rect(fill='pink'), 
+        legend.margin = margin(0,0,0,0,'pt'), 
+        legend.key = element_rect(fill='pink'), 
+        #legend.position = c(.9,.145),
+        axis.title = element_text(size=25, family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'), 
+        legend.title = element_text(size=15, family = 'Hind', color = 'firebrick'),
+        legend.text = element_text(size=10, family = 'Hind', color = 'firebrick')
+        )
+```
+
+
+:::
+
+:::
+
+::: footer
+Learn more: [Legend Elements](https://ggplot2-book.org/themes.html#legend-elements)
+:::
+
+
+
+
+
+
+
+
+## Faceting elements {.smaller}
+
+::: columns
+
+::: {.column width="50%"}
+
+
+-   `strip.background`
+    -   `strip.background.x`
+    -   `strip.background.y`
+-   `strip.placement`
+-   `strip.text`
+    -   `strip.text.x`
+        -   `strip.text.x.bottom`
+        -   `strip.text.x.top`
+    -   `strip.text.y`
+        -   `strip.text.y.left`
+        -   `strip.text.y.right`
+-   `panel.spacing`
+    -   `panel.spacing.x`
+    -   `panel.spacing.y`
+
+:::
+
+::: {.column width="50%"}
+
+<br>
+```{r, fig.height=8.5}
+ggplot(iris) +
+  geom_point(aes(Sepal.Length,Petal.Length)) + 
+  facet_wrap(~Species) + 
+  labs(title = 'Title',
+       subtitle = 'Subtitle',
+       caption = 'Caption') + 
+  theme(strip.background = element_rect(fill='pink'), 
+        strip.text = element_text(color='firebrick', size=15, family = 'Hind'), 
+        axis.title = element_text(size=25, family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic')
+        )
+```
+
+
+:::
+
+:::
+
+
+::: footer
+Learn more: [Faceting Elements](https://ggplot2-book.org/themes.html#faceting-elements)
+:::
+
+## Colors in R
+Colors can be easily referenced in with a hex code, rbg code, or by name (if applicable). 
+
+Following colors are available by name: 
+![](images/coloRs.png){.absolute top="130" left="80" width="800" height="550"}
+
+::: footer
+Learn more: [Color Codes](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf)
+:::
+
+## Fonts in R
+
+You can use any font available on your computer in a `ggplot2` graphic. 
+
+
+::: columns
+
+::: {.column width="50%"}
+
+**For Windows users**
+
+``` {.r code-line-numbers="1-6|8|"}
+install.packages('extrafont')
+library('extrafont')
+
+font_import()
+# You will be prompted to continue [y/n]
+# Type 'y' and press enter
+
+loadfonts(device="win")
+```
+
+
+:::
+
+
+::: {.column width="50%"}
+::: fragment
+**For Mac users**
+``` {.r code-line-numbers="1-6|8|"}
+install.packages('extrafont')
+library('extrafont')
+
+font_import()
+# You will be prompted to continue [y/n]
+# Type 'y' and press enter
+
+loadfonts()
+```
+
+:::
+
+:::
+
+:::
+
+::: fragment
+<br>
+Afterwards, you should be able to utilize fonts: 
+
+``` {.r}
+ggplot() +
+  ... +
+  theme(...
+        ... = element_text(family = "font-name", 
+                           face = "type-face-name")
+        )
+```
+:::
+
+::: fragment
+*Be sure to know which font families and font faces you have available.* 
+:::
+
+
+::: footer
+Find more fonts: [Google Fonts](https://fonts.google.com/)
+:::
+
+## Building a custom theme
+
+Instead of re-using all of your `theme()` code (which can be lengthy), try saving the code as an object. Then, you can add the object to a ggplot.
+
+``` {.r code-line-numbers="|1-2|4-8|10-11|"}
+# You have a pre-theme plot saved as 'existing_plot'
+existing_plot <- ggplot() + ...
+
+# Save your theme settings as an object ('my_theme')
+my_theme <- theme(plot.title = element_text(...), 
+                  ...
+                  ...
+                  )
+
+# Add your custom theme to the existing plot
+existing_plot + my_theme
+```
+
+
+
+::: footer
+Want to incorporate CSS? Learn more: [xaringanthemer](https://pkg.garrickadenbuie.com/xaringanthemer/index.html)
+:::
+
+
+# Exercise #2

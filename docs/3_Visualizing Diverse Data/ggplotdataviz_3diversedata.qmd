@@ -1,0 +1,630 @@
+---
+title: "Data Visualization with ggplot2"
+subtitle: "Session 3: Visualizing Diverse Data"
+author: "Nathan Barron<br /><span style='color:grey;'>{{< fa envelope >}} nathanbarron@ou.edu</span>"
+format:
+  revealjs: 
+    theme: ../mytheme.scss
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    navigation-mode: linear
+    touch: true
+    controls: true
+    footer: "{{< fa brands github >}} [nathantbarron](https://github.com/nathantbarron)"
+---
+
+```{r}
+library(ggplot2)
+library(extrafont)
+my_theme <- theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'),
+        legend.title = element_text(size = 25), legend.text = element_text(size=15))
+```
+
+
+## Different data need different visualizations
+
+
+::: panel-tabset
+### data
+
+```{r}
+knitr::kable(mtcars[1:10,], size=3)
+```
+
+
+### mpg
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(wt, mpg), size=3) +
+  labs(title = 'wt x mpg') + 
+  my_theme
+```
+
+
+
+### cyl
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(wt, cyl), size=3) +
+  labs(title = 'wt x cyl') + 
+  my_theme
+```
+
+
+### am
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(wt, am), size=3) +
+  labs(title = 'wt x am') + 
+  my_theme
+```
+
+### cyl x am
+
+```{r}
+ggplot(mtcars) +
+  geom_point(aes(cyl, am), size=3) +
+  labs(title = 'wt x am') + 
+  my_theme
+```
+:::
+
+
+## Types of data
+
+::: columns
+
+::: {.column width="50%"}
+
+**Levels of Data Measurement**
+
+-   Categorical
+    -   Binary 
+    -   Non-binary 
+    
+-   Continuous
+    
+:::
+
+::: {.column width="50%"}
+
+**Storing Data in R**
+
+-   Boolean
+-   Character
+-   Numerical
+-   Factor
+
+
+:::
+
+:::
+
+
+
+
+
+::: columns
+
+::: {.column width="50%"}
+::: panel-tabset
+
+### .
+<span style="font-size:10pt;">*Click through each header to read more about each type*</span>
+
+### Cat.: Binary
+
+Only two possible values <br>
+<span style="font-size:8pt;">*(e.g. treated or not treated; blue eyes or not blue eyes)*</span>
+
+### Cat.: Non-binary
+
+More than two possible **unordered** values <br>
+<span style="font-size:8pt;">*(e.g. eye colors measured as blue, green, brown, or other)*</span>
+
+### Continuous
+
+More than two possible **ordered** values <br>
+<span style="font-size:8pt;">*(e.g. height in inches)*</span>
+
+
+:::
+:::
+
+::: {.column width="50%"}
+::: panel-tabset
+
+### .
+<span style="font-size:10pt;">*Click through each header to read more about each type*</span>
+
+### Boolean
+Only two options: `TRUE` or `FALSE`; used when evaluating expressions <br /> 
+<span style="font-size:8pt;">*(e.g.* `x == y`*)*</span>
+
+### Character
+
+Any string of text; printed in double quotes `"` <br> 
+<span style="font-size:8pt;">*(e.g.* `"cat"`*,* `"blue"`*)* </span>
+
+
+### Numerical
+
+Two types of storage: integer and numerical; integers have no decimals <br />
+<span style="font-size:8pt;">*(e.g.* `10` *(integer),* `10.5` *(numerical))* </span>
+
+
+### Factor 
+A variable represented by a string with an underlying numerical value; can be ordered or unordered <br>
+<span style="font-size:8pt;">*(e.g.* a variable `temp` *might be represented with "cool", "medium", and "hot." A factor would show the character value but store the information as 1, 2, and 3, respectively -- preserving both the order and the label.*</span>
+
+### Dates
+Dates are stored as integers that represents how many days from a reference date (default: January 1, 1970) <br>
+<span style="font-size:8pt;">*e.g. *`"2023-08-01"` *is 19570 days since January 1, 1970. As with a factor, R keeps the label ("2023-08-01") but stores the numeric (19750).*</span>
+
+:::
+:::
+:::
+
+
+# Visualizing a single variable
+
+## Binary
+
+::: columns
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) +
+  geom_bar(aes(x=vs)) +
+  labs(title='Barplot (count)') +
+  my_theme
+```
+
+``` r
+# Barplot with frequency on y-axis
+ggplot(mtcars) +
+  geom_bar(aes(x=vs))
+```
+
+
+:::
+:::{.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) +
+  geom_bar(aes(x=vs, y=..count../sum(..count..))) +
+  labs(title='Barplot (proportion)', 
+       y = 'proportion') +
+  my_theme
+```
+
+``` r
+# Barplot with proportion on y-axis
+ggplot(mtcars) +
+  geom_bar(aes(x=vs, y=..count../sum(..count..)))
+```
+
+:::
+:::
+
+
+
+
+## Non-binary Categorical
+
+::: columns
+
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+library(waffle)
+library(dplyr)
+iris %>%
+  count(Species) %>%
+  ggplot(aes(fill = Species, values = n)) + 
+  geom_waffle(size = 1, colour = "white", na.rm=TRUE, flip = TRUE, make_proportional = TRUE) +
+  theme_void() +
+  coord_equal() + 
+  theme(legend.title = element_text(size = 25), legend.text = element_text(size=15)) + 
+  labs(title = '   Waffle plot') + 
+  theme(plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'), plot.title.position = 'plot')
+```
+
+
+:::
+
+::: {.column width="50%"}
+<br><br>
+```r
+# install.packages("waffle", 
+#                   repos = "https://cinc.rud.is")
+
+library(waffle)
+library(dplyr)
+
+iris %>% 
+  count(Species) %>%
+  ggplot(aes(fill = Species, values = n)) + 
+  geom_waffle(size = 1, 
+              colour = "white", 
+              na.rm=TRUE, 
+              flip = TRUE, 
+              make_proportional = TRUE) +
+  theme_void() + 
+  coord_equal()
+```
+
+:::
+:::
+
+## Continuous
+
+::: columns
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+ggplot(iris) +
+  geom_histogram(aes(x=Sepal.Length)) +
+  labs(title='Histogram') +
+  my_theme
+```
+
+``` r
+ggplot(iris) +
+  geom_histogram(aes(x=Sepal.Length))
+```
+
+
+:::
+:::{.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+ggplot(iris) +
+  geom_density(aes(x=Sepal.Length), linewidth=3) +
+  labs(title='Density') +
+  my_theme
+```
+
+``` r
+ggplot(iris) +
+  geom_density(aes(x=Sepal.Length))
+```
+
+:::
+:::
+
+
+# Visualizing multiple variables
+
+## Multiple categorical variables
+
+::: columns
+
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+mtcars %>%
+  mutate(vs = factor(vs), am = factor(am)) %>% 
+  ggplot(.) +
+  geom_bar(aes(x=vs, y=..count../sum(..count..),group=am, fill=am), position = 'dodge') +
+  labs(title='Barplot (proportion)', y = 'proportion') +
+  my_theme +
+  theme(legend.title = element_text(size = 25), legend.text = element_text(size=15)) 
+```
+
+
+:::
+
+::: {.column width="50%"}
+<br><br>
+```r
+mtcars %>%
+  mutate(vs = factor(vs), am = factor(am)) %>% 
+  ggplot(.) +
+  geom_bar( aes(x=vs, 
+                y=..count../sum(..count..),
+                group=am, 
+                fill=am), 
+            position = 'dodge')
+```
+
+:::
+:::
+
+## Multiple categorical variables II
+
+::: columns
+
+::: {.column width="50%"}
+```{r, include=TRUE, fig.height=8.5}
+library(ggmosaic)
+library(tidyr)
+ggmosaic::fly %>%
+  drop_na(do_you_recline, rude_to_recline) %>%
+  mutate(do_you_recline = case_when(do_you_recline=='about half the time' ~ 'about half\nthe time',
+                                    do_you_recline=='once in a while' ~ 'once\nin a while',
+                                    do_you_recline=='always' ~ 'always',
+                                    do_you_recline=='usually' ~ 'usually',
+                                    do_you_recline=='never' ~ 'never'), 
+         do_you_recline = factor(do_you_recline, levels = c('never', 'once\nin a while', 'about half\nthe time', 'usually', 'always'))) %>%
+  ggplot(.) +
+  geom_mosaic(aes(x = product(do_you_recline, rude_to_recline), fill=do_you_recline)) + 
+  labs(title='    Mosaic plot', y = 'Do you recline?\n', x = '\nIs it rude to recline?') +
+  theme_bw()+
+  theme(legend.title = element_text(size = 25), 
+        legend.text = element_text(size=15),
+        panel.grid = element_blank(),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind', face = 'bold'),
+        axis.text = element_text(size=20, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'), 
+        legend.position = 'none', 
+        panel.border = element_blank(), 
+        axis.ticks = element_blank())
+```
+
+``` r
+# library(ggmosaic)
+# library(tidyr)
+
+ggplot(ggmosaic::fly) +
+  geom_mosaic(aes(x = product(do_you_recline, rude_to_recline), fill=do_you_recline)) + 
+  theme(panel.grid = element_blank(),
+        legend.position = 'none')
+```
+:::
+
+::: {.column width="50%"}
+```{r, include=TRUE, fig.height=8.5}
+ggmosaic::fly %>%
+  drop_na(do_you_recline, rude_to_recline) %>%
+  mutate(do_you_recline = case_when(do_you_recline=='about half the time' ~ 'about half\nthe time',
+                                    do_you_recline=='once in a while' ~ 'once\nin a while',
+                                    do_you_recline=='always' ~ 'always',
+                                    do_you_recline=='usually' ~ 'usually',
+                                    do_you_recline=='never' ~ 'never'), 
+         do_you_recline = factor(do_you_recline, levels = c('never', 'once\nin a while', 'about half\nthe time', 'usually', 'always'))) %>% 
+  count(rude_to_recline, do_you_recline, .drop = FALSE) %>%
+  ggplot(.) +
+  geom_tile(aes(x = rude_to_recline, y = do_you_recline, fill = n)) + 
+  my_theme + 
+  labs(title='   Categorical heatmap', y = 'Do you recline?\n', x = '\nIs it rude to recline?')+
+  theme(legend.title = element_text(size = 25), 
+        legend.text = element_text(size=15),
+        panel.grid = element_blank(),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind', face = 'bold'),
+        axis.text = element_text(size=20, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'), 
+        panel.border = element_blank(), 
+        axis.ticks = element_blank())+
+  scale_fill_gradient(low = 'navy', high = "yellow")
+
+```
+
+
+``` r
+ggmosaic::fly %>%
+  count(rude_to_recline, do_you_recline, .drop = FALSE) %>%
+  ggplot(.) +
+  geom_tile(aes(x = rude_to_recline, 
+                y = do_you_recline, 
+                fill = n)) + 
+  scale_fill_gradient(low = 'navy', high = "yellow")
+```
+
+:::
+
+:::
+
+::: footer
+Learn more: [ggmosaic](https://cran.r-project.org/web/packages/ggmosaic/vignettes/ggmosaic.html)
+:::
+
+
+
+
+## Multiple continuous variables
+
+::: columns
+
+::: {.column width="50%"}
+```{r, include=TRUE, fig.height=8.5}
+iris %>%
+  ggplot(.) +
+  geom_point(aes(x=Petal.Length,y=Petal.Width, color=Species), size=3) +
+  labs(title='Scatterplot') +
+  my_theme +
+  theme(legend.title = element_text(size = 25), legend.text = element_text(size=15)) 
+```
+
+``` r
+ggplot(iris) +
+  geom_point(aes(x=Petal.Length,
+                 y=Petal.Width, 
+                 color=Species))
+```
+:::
+
+::: {.column width="50%"}
+```{r, include=TRUE, fig.height=8.5}
+ggplot(iris, aes(x=Petal.Length,y=Petal.Width))+
+  stat_density2d(aes(fill = ..density..), geom = "raster", contour = FALSE) +
+  scale_fill_gradient(low = "black", high = "white") + 
+  my_theme + theme(panel.grid = element_blank()) + labs(title='2-dimensional density')
+```
+
+
+``` r
+ggplot(iris, aes(x=Petal.Length,y=Petal.Width)) +
+  stat_density2d(aes(fill = ..density..),
+                 geom = "raster", contour = FALSE) +
+  scale_fill_gradient(low = "black", high = "white")
+```
+
+:::
+
+:::
+
+
+::: footer
+Learn more: [2D Density](https://r-graphics.org/recipe-distribution-density2d)
+:::
+
+
+## Hybrid (some categorical, some continuous)
+::: columns
+
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+
+#jitter (to avoid overplotting)
+
+ggplot(mtcars) +
+  geom_point(aes(x=cyl,y=am), size=3) + my_theme + 
+  labs(title = 'Overplotting', subtitle = 'Overplotting is when data or labels overlap, meaning that the viewer loses important information')
+ 
+```
+
+``` r
+ggplot(mtcars) +
+  geom_point(aes(x=cyl,y=am))
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) +
+  geom_jitter(aes(x=cyl,y=am), size=3, width = .15, height = .15) + my_theme + 
+  labs(title = 'Jitterplot', subtitle = "Adding 'jitter' means adding random variation to the points so that they don't overlap")
+```
+
+
+
+```r
+ggplot(mtcars) +
+  geom_jitter(aes(x=cyl,y=am))
+  
+# You can also specify 'width' and 'height'
+# as additional arguments to refine the 
+# jitter. Remember, jitter is random: 
+# jitter plots will change whenever you 
+# re-run the code.
+```
+
+:::
+:::
+
+
+
+
+## Hybrid II
+
+::: columns
+
+::: {.column width="50%"}
+```{r, include=TRUE, fig.height=8.5}
+library(gcookbook)
+climate_sub <- climate %>%
+  filter(Source == "Berkeley" & Year >= 1900) %>%
+  mutate(pos = Anomaly10y >= 0)
+
+ggplot(climate_sub, aes(x = Year, y = Anomaly10y, fill = pos)) +
+  geom_col(position = "identity", colour = "black", size = 0.25) + my_theme +   
+  scale_y_continuous(limits=c(-.5,1), breaks = seq(-.5,1,.25)) + 
+  scale_x_continuous(limits=c(1900,2010), breaks = seq(1900,2005,15))+
+  scale_fill_manual(values = c("#CCEEFF", "#FFDDDD"), guide = 'none') + 
+  labs(title='Barplot with +/- indicator', y='10yr climate anomaly (°C)')
+```
+
+``` r
+library(gcookbook)
+climate_sub <- climate %>%
+  filter(Source == "Berkeley" & Year >= 1900) %>%
+  mutate(pos = Anomaly10y >= 0)
+
+ggplot(climate_sub, aes(x = Year, y = Anomaly10y, fill = pos)) +
+  geom_col(position = "identity", colour = "black", size = 0.25) +    
+  scale_fill_manual(values = c("#CCEEFF", "#FFDDDD"), guide = 'none')
+```
+:::
+
+::: {.column width="50%"}
+```{r, include=TRUE, fig.height=8.5}
+# library(gcookbook)
+tophit <- tophitters2001[1:15, ]
+
+ggplot(tophit) +
+  geom_point(aes(x = avg, y = reorder(name, avg)), size = 3) +  # Use a larger dot
+  my_theme +
+  theme(
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    panel.grid.major.y = element_line(colour = "grey60", linetype = "dashed"), 
+    axis.text.y = element_text(size = 15),
+  ) + labs(title = 'Cleveland dot plot',y='')
+
+```
+
+
+``` r
+library(gcookbook)
+tophit <- tophitters2001[1:15, ]
+
+ggplot(tophit) +
+  geom_point(aes(x = avg, y = reorder(name, avg))) 
+  
+# The `reorder` function is helpful
+# when making plots of a non-binary categorical
+# variable and a corresponding continuous variable.
+```
+
+:::
+
+:::
+
+::: footer
+Learn more: [Bar Graph with +/- indicators](https://r-graphics.org/recipe-bar-graph-color-neg) and [Cleveland Dot Plots](https://r-graphics.org/recipe-bar-graph-dot-plot)
+:::
+
+# There is no "one size fits all"
+
+## Data viz is creative ...
+
+and creativity requires inspiration. 
+
+::: fragment
+<br><br>
+**Check out these cool resources:**
+
+-   [R graphics gallery](https://r-graph-gallery.com/index.html)
+-   [Nightingale: The Magazine of the Data Visualization Society](https://nightingaledvs.com/)
+-   [Daydreaming Numbers Blog](http://daydreamingnumbers.com/)
+:::
+
+
+## Data viz is also programming ...
+
+and programming requires code.  
+
+::: fragment
+<br><br>
+**Check out these cool resources:**
+
+-   [R Graphics Cookbook](https://r-graphics.org/)
+-   [R Graph Gallery](https://r-graph-gallery.com/index.html)
+:::

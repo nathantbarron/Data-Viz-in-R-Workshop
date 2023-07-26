@@ -1,0 +1,87 @@
+---
+title: 'Data Visualization with ggplot2 in R'
+subtitle: 'Activity #1: Creating Base Plots'
+format: html 
+editor: visual
+---
+
+## 0.0 Getting Started
+
+Install and load the **palmerpenguins** package. You should notice that you now have access to the `penguins` dataset, even though it does not appear in the global environment.
+
+```{r}
+#| eval: false
+install.packages("palmerpenguins")
+```
+
+```{r}
+#| warning: false
+library(ggplot2)
+library(palmerpenguins)
+head(penguins)
+```
+
+\newpage
+
+## 1.0 Creating a Base Plot
+
+Using the `penguins` dataset, create a scatterplot (using `geom_point()`) of flipper_length_mm (Y axis) by body_mass_g (X axis). Your plot should include *each* of the following:
+
+-   Title
+-   Subtitle
+-   X-axis title
+-   Y-axis title
+
+*NOTE: Reference the code available to you in the slides or the code-along .R file.*
+
+## 2.0 Adding a Layer
+
+Add a layer to your base plot with any *one* of the following:
+
+-   Mapped aesthetic
+-   Scale change (axis, color, size, etc.)
+-   Facet
+
+\newpage
+
+## 3.0 Examples
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 3.5
+ggplot(penguins) + 
+  geom_point(aes(body_mass_g, flipper_length_mm, color = species)) + 
+  labs(title = 'Flipper Length by Body Mass in Penguins',
+       subtitle = 'Species type in color', 
+       x = 'Body mass (g)',
+       y = 'Flipper length (mm)', 
+       color = 'Species')
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 3.5
+ggplot(penguins) + 
+  geom_point(aes(body_mass_g, flipper_length_mm)) + 
+  scale_x_continuous(limits = c(0,6500)) + 
+  scale_y_continuous(limits = c(0,240)) + 
+  labs(title = 'Flipper Length by Body Mass in Penguins',
+       subtitle = 'Rescaled to x=0, y=0', 
+       x = 'Body mass (g)',
+       y = 'Flipper length (mm)')
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 3.5
+ggplot(penguins) + 
+  geom_point(aes(body_mass_g, flipper_length_mm)) +
+  facet_wrap(~species) + 
+  labs(title = 'Flipper Length by Body Mass in Penguins',
+       subtitle = 'faceted by species', 
+       x = 'Body mass (g)',
+       y = 'Flipper length (mm)')
+```

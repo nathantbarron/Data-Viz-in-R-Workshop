@@ -1,0 +1,133 @@
+---
+title: 'Data Visualization with ggplot2 in R'
+subtitle: 'Activity #2: Customizing Themes'
+format: html 
+editor: visual
+---
+
+## 0.0 Getting Started
+
+Load the appropriate packages. Recreate the base plot you generated in Activity #1. Store the plot as `plot`.
+
+```{r}
+#| warning: false
+library(ggplot2)
+library(palmerpenguins)
+```
+
+
+## 1.0 Using pre-packaged themes 
+
+Add a pre-packaged theme to your base plot: 
+
+-   theme_grey()
+-   theme_bw()
+-   theme_linedraw()
+-   theme_light()
+-   theme_dark()
+-   theme_minimal()
+-   theme_classic()
+
+
+
+## 2.0 Customizing your own theme
+
+### 2.1 Add fonts 
+
+Add fonts that R can use for customizing plots. 
+
+```{r}
+#| eval: false
+
+#### For Windows Users ####
+install.packages('extrafont')
+library('extrafont')
+
+font_import()
+# You will be prompted to continue [y/n]
+# Type 'y' and press enter
+
+loadfonts(device="win")
+
+
+#### For Mac Users ####
+install.packages('extrafont')
+library('extrafont')
+
+font_import()
+# You will be prompted to continue [y/n]
+# Type 'y' and press enter
+
+loadfonts()
+```
+
+Check what fonts are available with `fonts()`. 
+
+### 2.2 Customizing theme elements
+
+Using the `theme()` function, customize the following theme elements: 
+
+-   plot.title
+-   plot.subtitle
+-   panel.background
+-   panel.border
+-   panel.background
+-   panel.grid
+-   axis.title
+-   axis.text
+
+You should use some combination of the following adjustments in your theme: 
+
+-   color
+-   fill
+-   size
+-   linewidth
+-   family
+-   face (bold, italic, etc.)
+
+
+**Be creative**. Effective data communication requires important information to be interpretable *and* visually inviting. 
+
+
+### 2.3 Saving your theme
+
+Store your theme as `my_theme`.
+
+### 2.4 Reusing your theme
+
+Run the following code: 
+
+```{r}
+#| eval: false
+plot + my_theme
+```
+
+
+### 3.0 Examples
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 6.5
+library(extrafont)
+ggplot(penguins) + 
+  geom_point(aes(body_mass_g, flipper_length_mm, color = species)) + 
+  labs(title = 'Flipper Length by Body Mass in Penguins',
+       subtitle = 'Species type in color', 
+       x = 'Body mass (g)',
+       y = 'Flipper length (mm)', 
+       color = 'Species') + 
+  scale_color_manual(values = c('royalblue','orange','grey30')) + 
+  theme(plot.title = element_text(color='cornflowerblue', size = 15, family = 'Comic Sans MS',face = 'bold'), 
+        plot.subtitle = element_text(color = 'grey40', size = 12, family = 'Malgun Gothic'), 
+        panel.background = element_rect(fill = 'whitesmoke'), 
+        panel.grid = element_line(color=NA), 
+        axis.title = element_text(color = 'grey20', size = 12, family = 'Malgun Gothic'),
+        axis.text = element_text(color = 'grey40', size = 8, family = 'Malgun Gothic'), 
+        legend.title = element_text(color = 'grey20', size = 12, family = 'Malgun Gothic'),
+        legend.text = element_text(color = 'grey40', size = 8, family = 'Malgun Gothic'), 
+        legend.position = 'bottom', 
+        legend.key = element_rect(fill = NA)
+        ) + 
+  guides(color = guide_legend(override.aes = list(size = 3)))
+```

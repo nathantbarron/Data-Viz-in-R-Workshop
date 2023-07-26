@@ -1,0 +1,163 @@
+---
+title: "Data Visualization with ggplot2"
+subtitle: "Session 4: Making Good Visualizations"
+author: "Nathan Barron<br /><span style='color:grey;'>{{< fa envelope >}} nathanbarron@ou.edu</span>"
+format:
+  revealjs: 
+    theme: ../mytheme.scss
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    navigation-mode: linear
+    touch: true
+    controls: true
+    footer: "{{< fa brands github >}} [nathantbarron](https://github.com/nathantbarron)"
+---
+
+# 4 Principles of Good <br />Data Visualization
+
+
+## Know your data 
+
+::: columns
+
+::: {.column width="50%"}
+<br><br>
+
+-   You can't visualize what you don't understand
+
+-   A deep knowledge of the data, its structure, and the insights to be drawn are essential to data visualization
+
+-   When preparing your visualization, <br />**form follows function**
+:::
+
+::: {.column width="50%"}
+::: fragment
+<p style="text-align: center;">**Data for price of groceries since 1970**</p>
+
+```{r}
+groceries <- data.frame(matrix(nrow=10,ncol=5))
+colnames(groceries)<-c('year', 'item', 'unit', 'price', 'type')
+groceries$year <- sort(rep(c(1970,1971),5))
+groceries$item <- rep(c('milk','eggs','butter', 'flour','sugar'), 2)
+groceries$unit <- rep(c('gallon','dozen','lb', '5lbs','5lbs'), 2)
+groceries$price <- c(0.49, 0.60, 0.87, 0.59, 0.67, 0.50, 0.53, 0.88, 0.60, 0.79)
+groceries$type <- rep('namebrand',10)
+knitr::kable(groceries, size=3)
+```
+:::
+:::
+
+:::
+
+
+
+
+
+## Sketch
+
+::: columns
+
+::: {.column width="50%"}
+
+The  <span style="font-family: sans-serif;
+  font-size: 3rem;
+  font-face: bold;
+  background: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #43a047, #eeff41, #f9a825, #ff5722);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;">creative</span> and  <span style='font-family:monospace; background-color: black; color: #32CD32;'> > programming </span>  aspects of data visualization require different parts of your brain. 
+
+
+1.    Start with *What do I want?* 
+
+2.    Draw it
+
+3.    Follow up with *How do I get that?* 
+
+4.    Code it!
+
+:::
+
+::: {.column width="50%"}
+::: fragment
+<p style="text-align: center;">**Visualize the price of groceries since 1970**</p>
+:::
+:::
+
+:::
+
+## Simple Visuals
+**Don't** try to include too much or irrelevant information.
+
+**Do** provide detailed captions that offer additional context and information to the graphic
+<br><br>
+
+::: columns
+
+::: {.column width="50%"}
+
+::: fragment
+
+**Use Color Effectively**
+
+::: incremental
+
+-   Only use colors when: 
+    -   There are fewer than 6 categories; or
+    -   Visualizing continuous data with color gradient 
+
+-   Use monotonic scales
+-   Use accessible colors: [Color Blindness Simulator](https://www.color-blindness.com/coblis-color-blindness-simulator/)
+-   Use colors and shading to highlight important information
+
+:::
+
+:::
+
+::: fragment
+[Color Palette Generator](https://coolors.co/)
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: fragment
+
+**Legends**
+
+::: incremental
+
+-   If there is a clear visual ordering in your data, make sure to match it in the legend.
+-   Whenever possible, design your figures so they don’t need a legend.
+![](images/no_legend.png)
+
+:::
+
+
+
+
+
+:::
+
+:::
+
+
+:::
+
+
+
+::: footer
+Read the paper: [Midway 2020](https://pdf.sciencedirectassets.com/776857/1-s2.0-S2666389920X00109/1-s2.0-S2666389920301896/main.pdf?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMT%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQCGfxLNcKnLTQEJoXTN3150xWSItakATaYI8Kgv%2F5NsBgIgUcoXIlibD9QBH%2F9j%2BDHUibUph8gjCcV2w8sUsYiVOhUqsgUITRAFGgwwNTkwMDM1NDY4NjUiDBAXsINMHVlWr%2FFVvyqPBdIasLA5nkir9gnYuZWODDiNXgirgyFq1Dtp7qQjIODTINaR%2F4HjULEKShdeIbsaMmMeU3%2BEP%2Bn5RiI3DEmlC4Z8xMhLaqYd1lDZ2KxhxGBDEGQHJQfOkjQswnhTw6GCO3QhiutEyap85pUtxDw6yvPt9H%2BsTkH%2BfVTmYRZ%2FB0rdvGAZuvGsARJTvYxKcPjCdu5OV62B%2F1fwDlyl%2Bhvp43g7it2FAZnmdGHREHZftgwv0YDzIv2s64VjTgOA7kpCCtIXa8FTssJU6Tiuc9czx02T9O1IZCn5ML3L1pMg%2FmB938tmN6WoXlL22jcefcNyhG7GWXNZ%2B2xCztWbt1gxhceRhAU3mw4LNgvcJcLwOjDXlIDeupVWoQaN54R69pKbiZaB3ufhtB68%2BaZM9r55HD0g8CSLOwYCT1aaZj3IRare7fG0lgZbJdS7tEvsFKuFcLSTfYPilVtHY9MElhOprFUe7VhhYTEpzKcqlJD%2BKOOC8hi6h7XwBKZQwNHQ5j15JgiH4wE%2F%2F3JbRR1MiRavY%2BAfYrgyNsoUucjIaWOuCDzsZ%2B8y%2FZHV9NIew4bw3ISgasr25h%2FROcl1ZWZDjXAaSCsbFhdUgIL4GKsNHfh5ZaR5ANwgU6HRNT7CO6qE8vZJkXWjO9tX1khLbIB5CBc0NFev4A6TGtp1ca0WyEEwFFXM3IYVxU6agvStYmHGWGqRp%2FeS5C4u2obORX502cfmGD5Nj7jQlpAgI%2BuKkESI%2FmAVfiuo%2BHsqkG8geSDYaLJ3fgkiTTKQw2j6KaXWihGs7sALOM%2FiWtnxkbSbRwTt32l2Sm%2FKhBUo4%2BT5299inXSYrE%2FR92hoVHx6g%2FjQYcaqRU5gjK1fjbyZjn5xpQBpu5Aw7pLRpQY6sQEXcKeC%2FOqeJtzsiq43RYEUQnf1v7Tlc3av%2BchgObTTOAmJdJaqbH7hcohM2Nt27BxlTQaY7GRuuINijIyL2L8OKwWvspZVCtqFJfGI%2F8KdSxULcivrgaENGH9Oo5a7J7WeG%2BPVXNtOtH0eBQzJEDBD2TO7VXhLai4JkSGSd9OL%2FjxMB1t%2FnZY2W8QwRQU%2BB60OoqwRxlI%2FmJJyTfjSsXqDao2nzgRwNSp8NaoYGdXumdk%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230716T210517Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIAQ3PHCVTYSUFPZTRZ%2F20230716%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=f2611775436f8edc1e294b3dda1808f60cbfd9b451cbd441fdf6a58a06ee445e&hash=68f74d47d1278da5a77845ee3a5bb5ac88c43cc97d2957fed292172f55427bce&host=68042c943591013ac2b2430a89b270f6af2c76d8dfd086a07176afe7c76c2c61&pii=S2666389920301896&tid=spdf-dd5f8385-ae2a-4661-a2b8-0b3a78fd2d18&sid=dd2548709476f54dfe3aedb2766e84ac9778gxrqa&type=client&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ua=1015520a530652560556&rr=7e7d33d4592b4761&cc=us)
+:::
+
+
+## Tell a story well
+
+**Don't** try to tell too much in a single visualization
+
+**Do** know *what* you want to convey
+
+**Do** design for the 'aha' moment
+

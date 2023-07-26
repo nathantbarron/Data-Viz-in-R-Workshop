@@ -1,0 +1,51 @@
+---
+title: 'Data Visualization with ggplot2 in R'
+subtitle: 'Activity #3: Creating and Customizing Complex Graphics'
+format: html 
+editor: visual
+---
+
+## 0.0 Getting Started
+
+Load the appropriate packages.
+
+```{r}
+#| warning: false
+library(ggplot2)
+library(palmerpenguins)
+```
+
+## 1.0 Visualizing Data, from start to finish
+
+Choose one of the following challenges. You must perform the following:
+
+1.  Decide which type of graphic is most appropriate for the graphic.
+
+2.  Hand sketch the desired plot.
+
+3.  Determine what additional features/aesthetics are required.
+
+4.  Build the base plot.
+
+5.  Customize the theme.
+
+There is no single correct approach, though you should be mindful of the guidelines discussed during the workshop. You will have an opportunity to present your graphic and hear feedback from the instructors and fellow workshop participants.
+
+*Alternatively, you can create a visualization using your own data. You will still have an opportunity to present and receive feedback.*
+
+## Challenge 1 (Difficulty : Low )
+
+Plot how many penguins were studied by island and species.
+
+## Challenge 2 (Difficulty : Med. )
+
+Show the relationship between body mass (x-axis) and bill length and bill depth (both y-axis) for each species. Provide both the line of best fit and the underlying data points.
+
+## Challenge 3 (Difficulty : High )
+
+Plot the change in the following for each species from 2007 to 2009:
+
+-   bill_length_mm
+-   bill_depth_mm
+-   flipper_length_mm
+-   body_mass_g

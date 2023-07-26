@@ -1,0 +1,502 @@
+---
+title: "Data Visualization with ggplot2"
+subtitle: "Session 1: The Grammar of Graphics"
+author: "Nathan Barron<br /><span style='color:grey;'>{{< fa envelope >}} nathanbarron@ou.edu</span>"
+format:
+  revealjs: 
+    theme: ../mytheme.scss
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    navigation-mode: linear
+    touch: true
+    controls: true
+    footer: "{{< fa brands github >}} [nathantbarron](https://github.com/nathantbarron)"
+resources:
+  - demo.pdf
+---
+
+## Shrek's Wisdom
+
+<iframe width="1120" height="630" src="https://www.youtube.com/embed/WHQE-p5oYGo?start=18&end=49" title="Ogres have layers" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media;" ></iframe>
+
+## Graphics are like onions
+
+The `ggplot2` package in R is designed with a **grammar**, meaning that there are *core principles* that can be applied to create nearly *any* type of graphic.
+
+::: {.column width="58%"}
+
+::: incremental
+-   Data: the information you want to visualize
+-   Mapping: the description of how the data's variables are "mapped" to aesthetic attributes
+<br><br>
+:::
+
+::: fragment
+<p style="line-height: 0;font-weight:bold;">Essential Mapping Components</p>
+:::
+::: incremental
+  -   Layer: collection of geometric elements (or *geom*s)
+  -   Geom: visual components of a plot (e.g. points, lines, bars, etc.)
+  -   Scales: map values in the data space to values in the aesthetic space (e.g. color, shape, size, etc.)
+  -   Coord: coordinate system (e.g., the axes and gridlines)
+  -   Facet: how to display subsets of data 
+  -   Theme: display features (e.g. font size, background color, etc.)
+  
+:::
+:::
+
+![](images/shrek.jpg){.absolute top="170" right="0" width="400" height="400"}
+
+::: footer
+Learn more: [Intro to ggplot2](https://ggplot2-book.org/introduction.html)
+:::
+
+## Plot layers
+::: {layout-ncol=3 .column-page}
+
+::: fragment
+```{r, include=TRUE, echo=FALSE, fig.align='center', fig.height=10, fig.width=10}
+library(ggplot2)
+library(extrafont)
+x<-1:5
+y<-c(1,3,2,5,6)
+
+
+ggplot() + geom_point(aes(x,y), size=10) + theme(axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_blank())
+```
+
+These are the `geom_point` elements.  They are the visual representations of your data.
+:::
+
+::: fragment
+```{r, fig.align='center', fig.height=10, fig.width=10}
+ggplot(data.frame(x,y)) + geom_point(aes(x,y), color='black') + theme(panel.border = element_rect(color='black', size=7), panel.grid = element_blank(), axis.ticks = element_line(linewidth=3), axis.ticks.length = unit(.5,'cm'), axis.text = element_text(size=35), axis.title = element_text(size=50))
+```
+These are the scales and coordinate system.  They are the axes and legends so that we can read values from the graph
+
+:::
+
+::: fragment
+```{r, fig.align='center', fig.height=10, fig.width=10}
+ggplot(data.frame(x,y)) + geom_point(aes(x,y), color='white') + labs(title = '\n Title') + theme(axis.title = element_blank(), axis.text = element_blank(), axis.ticks = element_blank(), panel.background = element_blank(), plot.background = element_rect(color='grey30', linewidth = 10), plot.title = element_text(size=50))
+```
+These are the plot annotations. They provide crucial information for easy interpretation.
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+ 
+## The foundation {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+<br><br><br>
+``` r
+ggplot(mtcars)
+```
+:::
+:::{.column width="50%"}
+<br><br>
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25),
+        axis.text = element_text(size=25))
+```
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+
+## Plotting the data {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+<br><br><br>
+``` r
+ggplot(mtcars) +
+  geom_point(aes(x=wt, y=mpg))
+```
+:::
+:::{.column width="50%"}
+<br><br>
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) + geom_point(aes(x=wt, y=mpg), size = 4) + 
+  labs(title = '') +
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25),
+        axis.text = element_text(size=25))
+```
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+
+## Annotating your plot {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+<br><br><br>
+``` r
+ggplot(mtcars) +
+  geom_point(aes(x=wt, y=mpg)) +
+  labs(x='Car weight (1000 lbs)', 
+       y='Miles per (US) gallon', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.', 
+       caption = 'Data come from the mtcars dataset.')
+```
+:::
+:::{.column width="50%"}
+<br><br>
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) + geom_point(aes(x=wt, y=mpg), size = 4) +
+  labs(x='\nCar weight (1000 lbs)', y='Miles per (US) gallon\n', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.\n', 
+       caption = '\nData come from the mtcars dataset.') + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat'),
+        plot.subtitle = element_text(size=15, family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind'))
+```
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+
+## Changing the theme {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+<br><br><br>
+``` r
+ggplot(mtcars) +
+  geom_point(aes(x=wt, y=mpg)) +
+  labs(x='Car weight (1000 lbs)', 
+       y='Miles per (US) gallon', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.', 
+       caption = 'Data come from the mtcars dataset.') +
+  theme(axis.title = element_text(color = 'grey50'),
+        plot.title = element_text(face = 'bold'),
+        plot.subtitle = element_text(color = 'grey50'),
+        plot.caption = element_text(face = 'italic'))
+```
+:::
+:::{.column width="50%"}
+<br><br>
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) + geom_point(aes(x=wt, y=mpg), size = 4) +
+  labs(x='\nCar weight (1000 lbs)', y='Miles per (US) gallon\n', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.\n', 
+       caption = '\nData come from the mtcars dataset.') + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'))
+```
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+
+## Adding new layers (fitted line) {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+<br><br><br>
+``` r
+ggplot(mtcars) +
+  geom_point(aes(x=wt, y=mpg)) +
+  geom_smooth(aes(x=wt, y=mpg), 
+              method = 'lm', 
+              alpha = .20, 
+              color = '#FF5A5F')+
+  labs(x='Car weight (1000 lbs)', 
+       y='Miles per (US) gallon', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.', 
+       caption = 'Data come from the mtcars dataset.') +
+  theme(axis.title = element_text(color = 'grey50'),
+        plot.title = element_text(face = 'bold'),
+        plot.subtitle = element_text(color = 'grey50'),
+        plot.caption = element_text(face = 'italic'))
+```
+:::
+:::{.column width="50%"}
+<br><br>
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) + geom_point(aes(x=wt, y=mpg), size = 4) +
+  geom_smooth(aes(x=wt, y=mpg), method = 'lm', linewidth = 1, color = '#FF5A5F', alpha = .20) +
+  labs(x='\nCar weight (1000 lbs)', y='Miles per (US) gallon\n', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.\n', 
+       caption = '\nData come from the mtcars dataset.') + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'))
+```
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+
+## Adding new layers (annotations) {auto-animate="true"}
+
+::: columns
+::: {.column width="50%"}
+<br><br><br>
+``` r
+ggplot(mtcars) +
+  geom_point(aes(x=wt, y=mpg)) +
+  geom_smooth(aes(x=wt, y=mpg), 
+              method = 'lm', 
+              alpha = .20, 
+              color = '#FF5A5F') +
+  annotate("text", x=4.5, y=25, label = 'NOTE', color = '#FF5A5F') + 
+  labs(x='Car weight (1000 lbs)', 
+       y='Miles per (US) gallon', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.', 
+       caption = 'Data come from the mtcars dataset.') +
+  theme(axis.title = element_text(color = 'grey50'),
+        plot.title = element_text(face = 'bold'),
+        plot.subtitle = element_text(color = 'grey50'),
+        plot.caption = element_text(face = 'italic'))
+```
+:::
+:::{.column width="50%"}
+<br><br>
+```{r, include=TRUE, fig.height=8.5}
+ggplot(mtcars) + geom_point(aes(x=wt, y=mpg), size = 4) +
+  geom_smooth(aes(x=wt, y=mpg), method = 'lm', linewidth = 1, color = '#FF5A5F', alpha = .20) +
+  annotate("text", x=4.5, y=25, label = 'NOTE', color = '#FF5A5F', size=15) + 
+  labs(x='\nCar weight (1000 lbs)', y='Miles per (US) gallon\n', 
+       title = 'Is car weight related to fuel efficiency?',
+       subtitle = 'Car weight is measured in 1000 lbs. Fuel efficiency is measured in miles per (US) gallon.\n', 
+       caption = '\nData come from the mtcars dataset.') + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'))
+```
+:::
+:::
+
+::: footer
+Learn more: [Layers](https://byrneslab.net/classes/biol607/readings/wickham_layered-grammar.pdf)
+:::
+
+## Aesthetic attributes
+
+*Aesthetics* are parameters that can change the appearance of a plot.
+
+::: columns
+
+
+::: {.column width="50%"}
+::: fragment
+<br><br>
+**Global aesthetics** affect all data at the same time.
+
+``` r
+ggplot(mpg) + 
+  geom_point(aes(displ, hwy), 
+             color = 'red')
+```
+```{r, include=TRUE}
+ggplot(mpg) + geom_point(aes(displ, hwy), size = 2, color = '#FF5A5F') + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'))
+  
+```
+:::
+:::
+
+
+::: {.column width="50%"}
+::: fragment
+<br><br>
+**Mapped aesthetics** affect data based on the values of some specified variable.
+
+``` r
+ggplot(mpg) + 
+  geom_point(aes(displ, hwy, color = class))
+# Notice that 'color = ____' is now inside aes()
+```
+```{r, include=TRUE}
+ggplot(mpg) + geom_point(aes(displ, hwy, colour = class), size = 2) + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'), 
+        legend.text = element_text(size=15), 
+        legend.title = element_text(size=15))
+  
+```
+
+:::
+:::
+:::
+
+
+::: footer
+Learn more: [Aesthetics](https://r02pro.github.io/aes.html#global-aes)
+:::
+
+## Linetype and shape aesthetics
+
+
+![](images/linetype.png){.absolute top="170" left="0" width="300" height="400"}
+![](images/shapes.png){.absolute top="170" right="0" width="300" height="400"}
+
+
+## Scales
+
+*Scales* refer to how data are translated into visual representations. This includes the x-axis, y-axis, colors, shapes, etc. Scales are essential components of the mapping process. 
+
+::: fragment
+
+::: columns
+
+::: {.column width="50%"}
+<br><br>
+**Key Elements**
+
+Name: a basic, though often neglected, description of scale
+
+Limits: the range of a scale
+
+Breaks: the subdivisions of range used to mark gradations
+
+:::
+
+::: {.column width="50%"}
+```{r, fig.height=8.5}
+library(ggplot2)
+library(extrafont)
+#ggplot(iris) + 
+  #geom_point(aes(Petal.Length,Petal.Width)) + 
+  #scale_x_continuous(limits=c(1,7), breaks = seq(1,7,1)) + 
+  #scale_y_continuous(limits=c(0,2.5), breaks = seq(0,2.5,.5))
+
+ggplot(iris) + 
+  geom_point(aes(Petal.Length,Petal.Width, color=Species), size=3) + 
+  scale_x_continuous(limits=c(0,7), breaks = seq(1,7,1)) + 
+  scale_y_continuous(limits=c(0,7), breaks = seq(0,7,1)) + 
+  labs(title = 'Scatterplot of Petal Length and Width',
+       subtitle = 'Axis Scales configured to show a 1:1 relationship\nColor scale to note category') + 
+  theme_bw() +
+  theme(panel.border = element_rect(color='grey30', linewidth = 3), 
+        axis.ticks = element_line(linewidth = 2),
+        axis.ticks.length = unit(.5,'cm'),
+        axis.title = element_text(size=25, color = 'grey50', family = 'Hind'),
+        axis.text = element_text(size=25, family = 'Hind'), 
+        plot.title = element_text(size=30, family = 'Montserrat', face = 'bold'),
+        plot.subtitle = element_text(size=15, color = 'grey50', family = 'Hind'),
+        plot.caption = element_text(size=15, family = 'Hind', face = 'italic'), 
+        legend.text = element_text(size=15), 
+        legend.title = element_text(size=15), 
+        legend.position = 'bottom')
+```
+:::
+
+:::
+
+:::
+
+::: footer
+Learn more: [Scales](https://ggplot2-book.org/scales-guides.html)
+:::
+
+
+## Facets
+
+*Facets* show subsets of the data in a sequential, side-by-side format. 
+
+::: fragment
+
+::: columns
+
+::: {.column width="50%"}
+
+<br><br>
+Two types of facets: 
+
+`facet_wrap`: <br /> Subsetting data on one variable
+<br><br>
+`facet_grid`: <br /> Subsetting data on more than one variable
+
+:::
+
+
+::: {.column width="50%"}
+
+![](images/facet.png){.absolute top="170" right="0" width="500" height="400"}
+:::
+
+:::
+
+:::
+
+::: footer
+Learn more: [Faceting](https://ggplot2-book.org/facet.html)
+:::
+
+
+# Exercise #1

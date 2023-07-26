@@ -1,0 +1,36 @@
+/*-- scss:defaults --*/
+
+
+// #FFFFFA
+// #363732
+// #63ADF2
+// #FF5A5F
+// #009ce0
+
+// #FFA630
+
+// fonts
+$font-family-sans-serif: "Hind";
+$font-family-monospace: "Lucida Console";
+
+// colors
+$body-bg: #FFFFFF !default;
+$body-color: #363732	 !default;
+$link-color: #FF5A5F !default;
+$code-block-bg: #f9f9f9; 
+$selection-bg: #b9b9b9 !default;
+$code-color: #093F71 !default;
+
+
+// headings
+$presentation-heading-font: "Montserrat";
+$presentation-heading-color:  #63ADF2 !default;
+$presentation-font-size-root: 25px;
+
+
+
+/*-- scss:rules --*/
+
+.reveal a {
+  line-height: 1.3em;
+}
