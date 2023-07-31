@@ -3,6 +3,7 @@ title: 'Data Visualization with ggplot2 in R'
 subtitle: 'Activity #3: Creating and Customizing Complex Graphics'
 format: html 
 editor: visual
+toc: true
 ---
 
 ## 0.0 Getting Started

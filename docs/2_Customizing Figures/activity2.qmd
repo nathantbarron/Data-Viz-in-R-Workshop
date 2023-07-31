@@ -3,6 +3,7 @@ title: 'Data Visualization with ggplot2 in R'
 subtitle: 'Activity #2: Customizing Themes'
 format: html 
 editor: visual
+toc: true
 ---
 
 ## 0.0 Getting Started
@@ -15,10 +16,9 @@ library(ggplot2)
 library(palmerpenguins)
 ```
 
+## 1.0 Using pre-packaged themes
 
-## 1.0 Using pre-packaged themes 
-
-Add a pre-packaged theme to your base plot: 
+Add a pre-packaged theme to your base plot:
 
 -   theme_grey()
 -   theme_bw()
@@ -28,13 +28,11 @@ Add a pre-packaged theme to your base plot:
 -   theme_minimal()
 -   theme_classic()
 
-
-
 ## 2.0 Customizing your own theme
 
-### 2.1 Add fonts 
+### 2.1 Add fonts
 
-Add fonts that R can use for customizing plots. 
+Add fonts that R can use for customizing plots.
 
 ```{r}
 #| eval: false
@@ -61,11 +59,11 @@ font_import()
 loadfonts()
 ```
 
-Check what fonts are available with `fonts()`. 
+Check what fonts are available with `fonts()`.
 
 ### 2.2 Customizing theme elements
 
-Using the `theme()` function, customize the following theme elements: 
+Using the `theme()` function, customize the following theme elements:
 
 -   plot.title
 -   plot.subtitle
@@ -76,7 +74,7 @@ Using the `theme()` function, customize the following theme elements:
 -   axis.title
 -   axis.text
 
-You should use some combination of the following adjustments in your theme: 
+You should use some combination of the following adjustments in your theme:
 
 -   color
 -   fill
@@ -85,9 +83,7 @@ You should use some combination of the following adjustments in your theme:
 -   family
 -   face (bold, italic, etc.)
 
-
-**Be creative**. Effective data communication requires important information to be interpretable *and* visually inviting. 
-
+**Be creative**. Effective data communication requires important information to be interpretable *and* visually inviting.
 
 ### 2.3 Saving your theme
 
@@ -95,13 +91,12 @@ Store your theme as `my_theme`.
 
 ### 2.4 Reusing your theme
 
-Run the following code: 
+Run the following code:
 
 ```{r}
 #| eval: false
 plot + my_theme
 ```
-
 
 ### 3.0 Examples
 

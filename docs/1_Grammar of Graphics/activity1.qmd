@@ -3,6 +3,7 @@ title: 'Data Visualization with ggplot2 in R'
 subtitle: 'Activity #1: Creating Base Plots'
 format: html 
 editor: visual
+toc: true
 ---
 
 ## 0.0 Getting Started
