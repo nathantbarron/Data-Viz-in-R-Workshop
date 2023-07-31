@@ -612,6 +612,8 @@ and creativity requires inspiration.
 **Check out these cool resources:**
 
 -   [R graphics gallery](https://r-graph-gallery.com/index.html)
+-   [Visual Vocabulary](https://ft-interactive.github.io/visual-vocabulary/)
+-   [from Data to Viz](https://www.data-to-viz.com/)
 -   [Nightingale: The Magazine of the Data Visualization Society](https://nightingaledvs.com/)
 -   [Daydreaming Numbers Blog](http://daydreamingnumbers.com/)
 :::
