@@ -21,7 +21,7 @@ We need:
 
 You need two types of data.
 
-First, you need data with geographic boundaries. For common boundaries, you can try R packages like `maps`, `mapsdata`, and `oz`. For other boundaries, you'll likely need either a shapefile or a geoJson file. 
+First, you need data with geographic boundaries. For common boundaries, you can try R packages like `maps`, `mapsdata`, and `oz`. For other boundaries, you'll likely need either a shapefile or a geoJson file.
 
 [Shapefiles with `rgdal` in R](https://r-graph-gallery.com/168-load-a-shape-file-into-r.html)<br /> [geoJson files with `geojsonio` in R](https://r-graph-gallery.com/325-background-map-from-geojson-format-in-r.html)
 
@@ -40,6 +40,8 @@ As with any figure, you should be careful to choose an appropriate scale. For ex
 Maps with `ggplot2` will likely include `geom_polygon`s and may also include `geom_point`, `geom_raster`, `geom_line`, etc.
 
 ## 1.0 Creating a map with common boundaries (`maps`)
+
+This example uses NASA Meteorite Landing data. You can access the data here: [Access NASA's Meteorite Landing Data](https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh).
 
 ### 1.1 Plotting data as geom_point()
 
@@ -108,6 +110,8 @@ ggplot() +
 ```
 
 ## 2.0 Creating a map with geoJson files (`geojsonio`)
+
+This example uses data from the Oklahoma Department of Environmental Quality (OK DEQ). You can access the data here: [Access OK DEQ Watershed Geographic Data](https://gisdata-deq.opendata.arcgis.com/datasets/DEQ::waterweb-lake-thunderbird-watershed/about).
 
 ### 2.1 Load and format geoJson file
 
