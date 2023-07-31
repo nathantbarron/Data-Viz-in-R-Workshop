@@ -1,0 +1,25 @@
+Data Sources for "Visualizing Spatial Data in R"
+
+#################################################################
+#################################################################
+
+'Meteorite Landings.csv' is public data published by the 
+National Aeronautics and Space Administration -- NASA (U.S.A.).  
+
+The data can be found here: 
+https://data.nasa.gov/Space-Science/Meteorite-Landings/gh4g-9sfh. 
+
+#################################################################
+#################################################################
+
+'Lake_Thunderbird_Watershed.geojson' is public data published by 
+the Oklahoma Department of Environmental Quality -- OK DEQ
+(Oklahoma, U.S.A.). 
+
+The data can be found here: 
+https://gisdata-deq.opendata.arcgis.com/datasets/DEQ::waterweb-
+lake-thunderbird-watershed/about 
+
+#################################################################
+#################################################################
+END

@@ -1,0 +1,164 @@
+---
+title: 'Data Visualization with ggplot2 in R'
+subtitle: 'Extra Notes: Visualizing Spatial Data in R'
+format: html 
+editor: visual
+toc: true
+---
+
+## 0.0 Applying the Grammar of Graphics
+
+Plotting spatial data with `ggplot2` requires the same graphical grammar as any other type of graphic. *(Note: There are other packages that might rely on different principles, e.g. `leaflet`. I'll focus here on static graphics with `ggplot2`.)*
+
+We need:
+
+1.  **Data**
+2.  A coordinate system
+3.  Scales
+4.  Layers of geometric objects (or 'geoms')
+
+### 0.1 Data
+
+You need two types of data.
+
+First, you need data with geographic boundaries. For common boundaries, you can try R packages like `maps`, `mapsdata`, and `oz`. For other boundaries, you'll likely need either a shapefile or a geoJson file. 
+
+[Shapefiles with `rgdal` in R](https://r-graph-gallery.com/168-load-a-shape-file-into-r.html)<br /> [geoJson files with `geojsonio` in R](https://r-graph-gallery.com/325-background-map-from-geojson-format-in-r.html)
+
+Second, you need your research data *that corresponds to the geographic boundaries*. If you are plotting precise events, you need research data with appropriate scales (e.g. longitude and latitude). If you are plotting regions, you need research data with unique IDs that match the research data to the geographic data.
+
+### 0.2 Coordinate system
+
+The coordinate system will usually be longitude and latitude.
+
+### 0.3 Scales
+
+As with any figure, you should be careful to choose an appropriate scale. For example, it is customary when plotting information about the United States to not keep Alaska and Hawaii at-scale; instead, they are often included as "cut-ins" at the bottom of a figure. [See an example of handling scale with Alaska and Hawaii.](https://rpubs.com/technocrat/thematic-alaska-hawaii)
+
+### 0.4 Layers of Geometric Objects
+
+Maps with `ggplot2` will likely include `geom_polygon`s and may also include `geom_point`, `geom_raster`, `geom_line`, etc.
+
+## 1.0 Creating a map with common boundaries (`maps`)
+
+### 1.1 Plotting data as geom_point()
+
+```{r}
+#| warning: false
+library(ggplot2)
+
+# Load Meteorite Landings data
+met_data <- read.csv("data/Meteorite Landings.csv")
+
+# Plotting data with 'geom_point'
+ggplot(met_data) +
+  geom_point(data = met_data, aes(x=reclong, y = reclat))
+```
+
+### 1.2 Access world map polygon data
+
+```{r}
+#| warning: false
+
+# install.packages('maps')
+# help(package='maps')
+
+library(maps)
+map('world') # quick mapping
+
+# Grab the 'world' map data and store as dataframe
+world <- map_data('world')
+```
+
+### 1.3 Plot world map with ggplot()
+
+```{r}
+#| warning: false
+# Plot world map with ggplot
+ggplot() + 
+  geom_polygon(data = world, aes(long, lat, group=group), fill = 'lightgrey')
+```
+
+### 1.4 Combine world map with Meteorite data
+
+```{r}
+#| warning: false
+# Combine world map with Meteorite data
+ggplot() + 
+  geom_polygon(data = world, aes(long, lat, group=group), fill = 'lightgrey')+
+  geom_point(data = met_data, aes(x=reclong, y = reclat), color = 'red',size=.25)
+```
+
+### 1.5 Clean your theme
+
+```{r}
+#| warning: false
+#| echo: false
+# Clean Theme
+ggplot() + 
+  geom_polygon(data = world, aes(long, lat, group=group), fill = 'lightgrey')+
+  geom_point(data = met_data, aes(x=reclong, y = reclat), color = 'red',size=.25) + 
+  labs(title = 'Meteorite Landings across the World', 
+       subtitle = 'Each red dot represents a reported meteorite landing',
+       caption = 'Source: NASA.gov') + 
+  scale_x_continuous(limits = c(-200,200)) + 
+  theme_void() + 
+  theme(plot.title = element_text(face = 'bold'), 
+        plot.subtitle = element_text(face = 'italic'))
+```
+
+## 2.0 Creating a map with geoJson files (`geojsonio`)
+
+### 2.1 Load and format geoJson file
+
+```{r}
+#| warning: false
+#install.packages('geojsonio')
+library(geojsonio)
+library(broom)
+
+watershed <- geojson_read("data/Lake_Thunderbird_Watershed.geojson",  what = "sp")
+watershed <- tidy(watershed)
+```
+
+### 2.2 Plot the watershed
+
+```{r}
+#| warning: false
+# Plot the watershed
+ggplot() + 
+  geom_polygon(data = watershed, aes(long, lat), fill = 'lightblue')
+```
+
+### 2.3 Plot the state and county boundaries
+
+```{r}
+#| warning: false
+# Plot the state of OK with county lines
+county <- data.frame(map_data('county'))
+oklahoma <- county[county$region=='oklahoma',]
+
+ggplot() + 
+  geom_polygon(data = oklahoma, aes(long, lat, group=subregion), fill = 'white', color = 'black')
+```
+
+### 2.4 Combine 2.2 & 2.3
+
+```{r}
+#| warning: false
+# Combine with Lake Thunderbird Watershed
+ggplot() + 
+  geom_polygon(data = oklahoma, aes(long, lat, group=subregion), fill = 'white', color = 'black') + 
+  geom_polygon(data = watershed, aes(long, lat), fill = 'lightblue', alpha =.5) + 
+  labs(title = 'Lake Thunderbird Watershed in Oklahoma, U.S.A.', 
+       caption = 'Source: OK Dept of Environmental Quality') + 
+  theme_void() 
+```
+
+## Additional Resources
+
+[Making Maps with R (Nico Hahn)](https://bookdown.org/nicohahn/making_maps_with_r5/docs/introduction.html)
+
+[Maps (R Graph Gallery)](https://r-graph-gallery.com/map.html)
+
+[Interactive HTML Maps with `leaflet`](https://rstudio.github.io/leaflet/)
