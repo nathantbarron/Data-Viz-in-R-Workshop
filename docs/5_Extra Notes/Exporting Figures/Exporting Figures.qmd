@@ -1,0 +1,82 @@
+---
+title: 'Data Visualization with ggplot2 in R'
+subtitle: 'Extra Notes: Exporting Figures'
+format: html 
+editor: visual
+toc: true
+---
+
+### 0.0 Toy Example to Export
+
+```{r}
+#| echo: false
+#| warning: false
+library(palmerpenguins)
+library(ggplot2)
+library(extrafont)
+p<-ggplot(penguins) + 
+  geom_point(aes(body_mass_g, flipper_length_mm, color = species)) + 
+  labs(title = 'Flipper Length by Body Mass in Penguins',
+       subtitle = 'Species type in color', 
+       x = 'Body mass (g)',
+       y = 'Flipper length (mm)', 
+       color = 'Species') + 
+  scale_color_manual(values = c('royalblue','orange','grey30')) + 
+  theme(plot.title = element_text(color='cornflowerblue', size = 15, family = 'Comic Sans MS',face = 'bold'), 
+        plot.subtitle = element_text(color = 'grey40', size = 12, family = 'Malgun Gothic'), 
+        panel.background = element_rect(fill = 'whitesmoke'), 
+        panel.grid = element_line(color=NA), 
+        axis.title = element_text(color = 'grey20', size = 12, family = 'Malgun Gothic'),
+        axis.text = element_text(color = 'grey40', size = 8, family = 'Malgun Gothic'), 
+        legend.title = element_text(color = 'grey20', size = 12, family = 'Malgun Gothic'),
+        legend.text = element_text(color = 'grey40', size = 8, family = 'Malgun Gothic'), 
+        legend.position = c(.926,0.15), 
+        legend.key = element_rect(fill = NA)
+        ) + 
+  guides(color = guide_legend(override.aes = list(size = 3)))
+p
+```
+
+## 1.0 Reproducible Exporting with `ggsave()`
+
+### 1.1 Exporting the most recent ggplot figure
+
+By default, the `ggsave()` function will save the most recently plotted ggplot unless a plot argument is specified.
+
+``` r
+# library(ggplot2)
+
+ggsave("first_plot.pdf") 
+# This saves the most recent plot as 
+# "first_plot.pdf" in the working directory
+```
+
+### 1.2 Specifying addition arguments
+
+The following arguments are commonly utilized with `ggsave()`:
+
+-   **filename:** File name to create on disk
+-   **plot:** Specify object name of plot to save
+-   **path:** Path of exporting directory (combined with 'filename' to create full filename)
+-   **width:** plot width in units
+-   **height:** plot height in units
+-   **units:** 'in', 'cm', 'mm', or 'px'; defaults to 'in'
+-   **dpi:** Plot resolution (dots per inch). Print version is normally 300.
+
+``` r
+ggsave( filename = "plot1.pdf",
+        plot = p1, 
+        path = "./figs/",
+        width = 6,
+        height = 8, 
+        units = "in",
+        dpi = 300 )
+```
+
+### 1.3 Common Practices
+
+-   Always export to .pdf or similar (e.g. .eps) file when possible. Vectorized files (like .pdf) will not become pixelated like other formats (like .png, .jpg, etc.)
+-   Figures are often saved in subfolders named "./figures/" or "./figs/", etc. This keeps your working directory free from clutter, especially when you need to export several figures. 
+-   **ALWAYS** specify a width and a height. Otherwise, R will take the current dimensions of the graphics device -- which is not easily reproducible.
+-   The 'dpi' argument will not be used for a vectorized plot (as included above). 'dpi' is only utilized for non-vectorized formats like .png and .jpg.
+-   Be mindful that some graphic elements (such as alpha/transparency and fonts) may be tricky for some export file extensions. 
